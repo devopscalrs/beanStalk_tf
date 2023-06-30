@@ -13,10 +13,6 @@ data "aws_subnets" "vpc" {
   }
 }
 
-data "aws_subnet" "list_subnet" {
-  for_each = toset(data.aws_subnets.vpc.ids)
-  id       = each.value
-}
 
 
 
