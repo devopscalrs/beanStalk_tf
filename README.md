@@ -11,3 +11,12 @@ Genera todos los valores útiles a los que los módulos raíz podrían necesitar
 # Se ddddddddddd otra cosa
 
 - Se  
+
+
+```terraform
+resource "aws_iam_instance_profile" "ec2_eb_profile" {
+  name = "ROLE_ec2-profile_BS"
+  role = aws_iam_role.ec2_role.name
+
+}
+```
