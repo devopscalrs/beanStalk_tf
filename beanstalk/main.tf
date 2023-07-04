@@ -1,13 +1,13 @@
 #====================  CREATE INSTANCE PROFILE  ======================== ###
 
 resource "aws_iam_instance_profile" "ec2_eb_profile" {
-  name = "ROLE_ec2-profile_BS"
+  name = "role_ec2_profile_beanstalk"
   role = aws_iam_role.ec2_role.name
 
 }
 
 resource "aws_iam_role" "ec2_role" {
-  name               = "ROLE_EC2_BEANSTALK"
+  name               = "role_ec2_beanstalk"
   assume_role_policy = data.aws_iam_policy_document.assume_policy.json
   managed_policy_arns = [
     "arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier",
@@ -17,7 +17,7 @@ resource "aws_iam_role" "ec2_role" {
   ]
 
   inline_policy {
-    name   = "ROLE_EC2_BEANSTALK_INLINE"
+    name   = "role_ec2_beanstalk_inline_policy"
     policy = data.aws_iam_policy_document.permissions.json
   }
 
