@@ -55,6 +55,26 @@ vars.tf
 
 ```
 
+**beanstalk/vars.tf** Este archivo recibe las variables de entradas invocadas para la ejecucion del modulo, Adicional a eso se configuro el modulo para que reciba diferentes parametros de configuracion que nos permitira levantar el servicio beanstalk adaptado a la especificacion de algunos recursos, para eso solo debemos usar los parametros necesarios y parametizarlo al momento de invocar el modulo en el archivo main.tf del root principal, el modulo soportara estos parametro, de igual forma estos parametros tienen valores por defecto necesarios para levantar el servicio beanstalk de manera optima.
+
+**Ejemplo de beanstalk/varstf** Variables con el min y max de Auto Scaling por defecto
+
+```terraform
+#=========  AUTOSCALING LAUNCH CONFIGURATION  =========== ###
+
+variable "min_inst" {
+  description = "min de instacia para el loadBalancer"
+  type        = number
+  default     = 1
+}
+
+variable "max_inst" {
+  description = "max de instacia para el loadBalancer"
+  type        = number
+  default     = 2
+}
+```
+
 
 
 
