@@ -59,7 +59,7 @@ vars.tf
 **beanstalk/vars.tf** Este archivo recibe las variables de entradas invocadas para la ejecucion del modulo, Adicional a eso se configuro el modulo para que reciba diferentes parametros de configuracion que nos permitira levantar el servicio beanstalk adaptado a la especificacion de algunos recursos, para eso solo debemos usar los parametros necesarios y parametizarlo al momento de invocar el modulo en el archivo main.tf del root principal, el modulo soportara estos parametro, de igual forma estos parametros tienen valores por defecto necesarios para levantar el servicio beanstalk de manera optima.
 
 
-**Ejemplo de beanstalk/varstf** Variables con el min y max de Auto Scaling por defecto, que igual pueden recibir estas variables al invocar el modulo
+**Ejemplo** Variables con el min y max de Auto Scaling por defecto, que igual pueden recibir estas variables al invocar el modulo
 
 
 ```terraform
@@ -79,9 +79,9 @@ variable "max_inst" {
 ```
 
 
-**beanstalk/main.tf** Contiene la creacion del recurso Elastic Beanstalk con su aplicacion y su ambiente, estos reciben los parametros ya definidos al invocar el modulo, de lo contrario tendran valores por defecto como ya se menciono, dentro del ambiente del Elastic BeanStalk se ha agregado parametros de configuracion para distintas caracteristicas del servicio.
+**beanstalk/main.tf** Contiene la creacion del recurso Elastic Beanstalk con su aplicacion y su ambiente, estos reciben los parametros ya definidos al invocar el modulo, de lo contrario tendran valores por defecto como ya se menciono, dentro del ambiente del Elastic BeanStalk se ha parametizado todas las variables para soportar la entrada de diferentes valores de configuracion,  que nos permitan la creacion de distintas caracteristicas del servicio.
 
-Ejemplo  La Plantilla de lanzamiento para el Auto Scaling Group y su medicion para el escalado, asi como tambien se incorporo que los registros del servicio se almacenen el cloudwatch 
+**Ejemplo**  La Plantilla de lanzamiento para el Auto Scaling Group y su medicion para el escalado, asi como tambien se incorporo que los registros del servicio se almacenen el cloudwatch 
 
 ```terraform
  #=========  AUTOSCALING TRIGGER  =========== ###
@@ -111,30 +111,33 @@ Ejemplo  La Plantilla de lanzamiento para el Auto Scaling Group y su medicion pa
 ```
 
 
-Ejemplo  CLOUDWATCH LOGS
+**Rol - Politicas - Permisos** Para que el servicio BeanStalk funcione es necesario la creacion de un rol de instancia que permitiria a la instancia creada del ambiente ejecutar acciones necesarias para su funcionamiento, por lo tanto se definio el recursos ***ec2_eb_profile** que tendra el rol y las politicas necesarias para esto, el rol de instancia creado tendra el nombre **Role_ec2-profile_bs**
 
 ```terraform
 
+resource "aws_iam_instance_profile" "ec2_eb_profile" {
+  name = "ROLE_ec2-profile_BS"
+  role = aws_iam_role.ec2_role.name
 
+}
 
+resource "aws_iam_role" "ec2_role" {
+  name               = "ROLE_EC2_BEANSTALK"
+  assume_role_policy = data.aws_iam_policy_document.assume_policy.json
+  managed_policy_arns = [
+    "arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier",
+    "arn:aws:iam::aws:policy/AWSElasticBeanstalkMulticontainerDocker",
+    "arn:aws:iam::aws:policy/AWSElasticBeanstalkWorkerTier",
+    "arn:aws:iam::aws:policy/EC2InstanceProfileForImageBuilderECRContainerBuilds"
+  ]
 
-  ```
-
-Ejemplo AUTOSCALING LAUNCH 
-
-
-```terraform
-
-  setting {
-    namespace = "aws:autoscaling:launchconfiguration"
-    name      = "RootVolumeType"
-    value     = var.rootVolumeType
+  inline_policy {
+    name   = "ROLE_EC2_BEANSTALK_INLINE"
+    policy = data.aws_iam_policy_document.permissions.json
   }
 
-  setting {
-    namespace = "aws:autoscaling:launchconfiguration"
-    name      = "RootVolumeSize"
-    value     = var.rootVolumeSize
-  }
+}
+
 
 ```
+
