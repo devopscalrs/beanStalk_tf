@@ -44,6 +44,7 @@ Se aprecia que tenemos 2 datos comentados que son **bice_vpc_id** y **public_sub
 
 **Para ejecutar el proyecto satisfactoriamente en nuestro ambiente, solo debemos configurar las variables de entrada en el archivo terraform.tfvars**
 
+
 ## Modulo beanStalk
 
 El modulo esta compuesto por 3 archivos
@@ -57,7 +58,9 @@ vars.tf
 
 **beanstalk/vars.tf** Este archivo recibe las variables de entradas invocadas para la ejecucion del modulo, Adicional a eso se configuro el modulo para que reciba diferentes parametros de configuracion que nos permitira levantar el servicio beanstalk adaptado a la especificacion de algunos recursos, para eso solo debemos usar los parametros necesarios y parametizarlo al momento de invocar el modulo en el archivo main.tf del root principal, el modulo soportara estos parametro, de igual forma estos parametros tienen valores por defecto necesarios para levantar el servicio beanstalk de manera optima.
 
+
 **Ejemplo de beanstalk/varstf** Variables con el min y max de Auto Scaling por defecto, que igual pueden recibir estas variables al invocar el modulo
+
 
 ```terraform
 #=========  AUTOSCALING LAUNCH CONFIGURATION  =========== ###
@@ -76,24 +79,33 @@ variable "max_inst" {
 ```
 
 
-**beanstalk/main.tf** Contiene la creacion del recurso ELASTIC BEANSTALK con su aplicacion y su ambiente, estos reciben los parametros ya definidos al invocar el modulo, y sino tendra otros valores por defecto como ya se menciono, dentro del ambiente del Elastic BeanStalk se ha agregado parametros de configuracion para distintas caracteristicas del servicio.
+**beanstalk/main.tf** Contiene la creacion del recurso Elastic Beanstalk con su aplicacion y su ambiente, estos reciben los parametros ya definidos al invocar el modulo, de lo contrario tendran valores por defecto como ya se menciono, dentro del ambiente del Elastic BeanStalk se ha agregado parametros de configuracion para distintas caracteristicas del servicio.
 
-Ejemplo  AUTOSCALING TRIGGER
+Ejemplo  La Plantilla de lanzamiento para el Auto Scaling Group y su medicion para el escalado, asi como tambien se incorporo que los registros del servicio se almacenen el cloudwatch 
 
 ```terraform
  #=========  AUTOSCALING TRIGGER  =========== ###
   setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "RootVolumeType"
+    value     = var.rootVolumeType
+  }
+
+
+  #=========  CLOUDWATCH LOGS  =========== ###
+
+  setting {
+    namespace = "aws:elasticbeanstalk:cloudwatch:logs"
+    name      = "StreamLogs"
+    value     = var.cloudwatch_streamLogs
+
+
+  #=========  AUTOSCALING TRIGGER  =========== ###
+
+   setting {
     namespace = "aws:autoscaling:trigger"
     name      = "MeasureName"
     value     = var.asg_trigger_measureName
-    # Nombre de la media para esacalar
-  }
-
-  setting {
-    namespace = "aws:autoscaling:trigger"
-    name      = "Statistic"
-    value     = var.asg_trigger_statistic
-    # Estadistica de uso por el trigger
   }
 
 ```
@@ -102,19 +114,9 @@ Ejemplo  AUTOSCALING TRIGGER
 Ejemplo  CLOUDWATCH LOGS
 
 ```terraform
-  setting {
-    namespace = "aws:elasticbeanstalk:cloudwatch:logs"
-    name      = "StreamLogs"
-    value     = var.cloudwatch_streamLogs
 
-  }
 
-  setting {
-    namespace = "aws:elasticbeanstalk:cloudwatch:logs"
-    name      = "DeleteOnTerminate"
-    value     = var.cloudwatch_deleteLogs
 
-  }
 
   ```
 
