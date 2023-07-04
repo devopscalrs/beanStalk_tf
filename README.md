@@ -1,5 +1,6 @@
 
-# [Bice] BeanStalk con IaC 
+<em> # [Bice] BeanStalk con IaC  </em>
+
 
 
 
@@ -15,9 +16,14 @@ module "beanstalk" {
   bice_name_application    = var.bice_name_application
   bice_environment         = var.bice_environment
   bice_solution_stack_name = var.bice_solution_stack_name
+
+  instance_type      = var.instance_type
+  vpc_public_subnets = toset(data.aws_subnets.vpc.ids)
+  key_pair           = var.key_pair
+
 }
 ```
-Este modulo recibe varios parametros como variables, dichas variables son configuradas en el archivo terraform.tfvars, adicional a eso se agregaron otras variables de configuracion
+Este modulo recibe varios parametros como variables, dichas variables son configuradas en el archivo terraform.tfvars, adicional se agregaron otras variables de configuracion
 
 
 ```terraform
@@ -34,7 +40,26 @@ key_pair      = "terraform-keypair-new"
 //public_subnets = ["subnet-0269ad79292f2b96f", "subnet-03688075bfdf14b1b"]
 ```
 
-Se aprecia que tenemos 2 datos comentados que son **bice_vpc_id** y **public_subnets** esto es debido a que estamos haciendo uso de las VPC y sus subredes default a traves del dataSource que nos proporciona terraform, pero si queremos hacer uso de una VPC y subred especifica lo podemos descomentar y declarar el parametro a necesitar, asi como tambien especificar en el archivo main.tf para que invoque a estas variables y no a los dataSource 
+Se aprecia que tenemos 2 datos comentados que son **bice_vpc_id** y **public_subnets** esto es debido a que estamos haciendo uso de las VPC y sus subredes por defecto a traves del dataSource que nos proporciona terraform, pero si queremos hacer uso de una VPC y subred especifica lo podemos descomentar y declarar el parametro a necesitar, asi como tambien especificar en el archivo main.tf para que invoque a estas variables y no a los dataSource. Adicional estas otras variables agregadas como  **instance_type** y **key_pair** si no tenemos un dato especifico para estos, las podemos comentar al invocar el modulo y el proyecto por declaracion de las variables soportara la invocacion al modulo ya que estos datos tienen valores por defecto.
+
+**Para ejecutar el proyecto satisfactoriamente en nuestro ambiente, solo debemos configurar las variables de entrada en el archivo terraform.tfvars**
+
+# Modulo beanStalk
+
+El modulo esta compuesto por 3 archivos
+
+```
+main.tf
+output.tf
+vars.tf
+
+```
+
+
+
+
+
+
 
 
 
