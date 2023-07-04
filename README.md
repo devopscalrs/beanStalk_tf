@@ -111,7 +111,7 @@ variable "max_inst" {
 ```
 
 
-**Rol - Politicas - Permisos** Para que el servicio BeanStalk funcione es necesario la creacion de un rol de instancia que permitiria a la instancia creada del ambiente ejecutar acciones necesarias para su funcionamiento, por lo tanto se definio el recursos ***ec2_eb_profile** que tendra el rol y las politicas necesarias para esto, el rol de instancia creado tendra el nombre **Role_ec2-profile_bs**
+**Rol - Politicas - Permisos** Para que el servicio BeanStalk funcione es necesario la creacion de un rol de instancia que permitiria a la instancia creada del ambiente ejecutar acciones necesarias para su funcionamiento, por lo tanto se definio el recursos ***ec2_eb_profile** que tendra el rol y las politicas necesarias para esto, el rol de instancia creado tendra el nombre **role_ec2-profile_bs**
 
 ```terraform
 
@@ -139,7 +139,7 @@ resource "aws_iam_role" "ec2_role" {
 }
 
 ```
-
+**beanstalk/output.tf** se agrega este archivo para proveer la salida de recursos fuera del modulo, como  por ejemplo en este caso he aplicado la salinda de DNS del ambiente levantando en beanstalk, esto con la funcionalidad de que dicho recurso u otros que se puedan agregar naturalmente sean utilizados por otros servicios que hagan uso del modulo, por lo tanto este recurso como ejemplo lo he expuesto al llamarlo en el archivo output.tf raiz, para que sea mostrada la funcionalidad del llamado del ambiente una vez completado el tf apply.
 
 ## Conclusion 
 
