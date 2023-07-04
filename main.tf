@@ -28,7 +28,7 @@ module "beanstalk" {
 
   instance_type      = var.instance_type
   vpc_public_subnets = toset(data.aws_subnets.vpc.ids)
-  key_pair           = var.key_pair
+  // key_pair           = var.key_pair
 
 }
 
