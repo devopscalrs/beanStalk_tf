@@ -139,7 +139,7 @@ resource "aws_iam_role" "ec2_role" {
 }
 
 ```
-**3-. beanstalk/output.tf** se agrega este archivo para proveer la salida de recursos fuera del modulo, como  por ejemplo en este caso he aplicado la salinda de DNS del ambiente levantando en beanstalk, esto con la funcionalidad de que dicho recurso u otros, los cuales se puedan agregar naturalmente sean utilizados por otros servicios que hagan uso del modulo, por lo tanto este recurso como ejemplo lo he expuesto al llamarlo en el archivo output.tf raiz, para que sea mostrada la funcionalidad del llamado del ambiente una vez completado el tf apply.
+**3-. beanstalk/output.tf** se agrega este archivo para proveer la salida de recursos fuera del modulo, como  por ejemplo en este caso he aplicado la salinda de DNS del ambiente levantado en beanstalk, esto con la funcionalidad de que dicho recurso u otros se puedan agregar naturalmente y sean utilizados por otros servicios que hagan uso del modulo, por lo tanto este recurso como ejemplo lo he expuesto al llamarlo en el archivo output.tf raiz, para que sea mostrada la funcionalidad del llamado del la variable que contiene el dns del ambiente una vez completado el tf apply.
 
 ## Conclusion 
 
