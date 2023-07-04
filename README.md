@@ -138,6 +138,15 @@ resource "aws_iam_role" "ec2_role" {
 
 }
 
-
 ```
+
+
+##Conclusion 
+
+Para desplegar exitosamente el proyecto, se debe configurar las variables dentro del archivo **terraform.tfvars** y en la raiz  de proyecyto ejecutar estos comandos
+
+terraform init
+terraform validate
+terraform plan
+terraform apply
 
