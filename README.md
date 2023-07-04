@@ -56,7 +56,7 @@ vars.tf
 
 ```
 
-**beanstalk/vars.tf** Este archivo recibe las variables de entradas invocadas para la ejecucion del modulo, Adicional a eso se configuro el modulo para que reciba diferentes parametros de configuracion que nos permitira levantar el servicio beanstalk adaptado a la especificacion de algunos recursos, para eso solo debemos usar los parametros necesarios y parametizarlo al momento de invocar el modulo en el archivo main.tf del root principal, el modulo soportara estos parametro, de igual forma estos parametros tienen valores por defecto necesarios para levantar el servicio beanstalk de manera optima.
+**1-. beanstalk/vars.tf** Este archivo recibe las variables de entradas invocadas para la ejecucion del modulo, Adicional a eso se configuro el modulo para que reciba diferentes parametros de configuracion que nos permitira levantar el servicio beanstalk adaptado a la especificacion de algunos recursos, para eso solo debemos usar los parametros necesarios y parametizarlo al momento de invocar el modulo en el archivo main.tf del root principal, el modulo soportara estos parametro, de igual forma estos parametros tienen valores por defecto necesarios para levantar el servicio beanstalk de manera optima.
 
 
 **Ejemplo** Variables con el min y max de Auto Scaling por defecto, que igual pueden recibir estas variables al invocar el modulo
@@ -79,7 +79,7 @@ variable "max_inst" {
 ```
 
 
-**beanstalk/main.tf** Contiene la creacion del recurso Elastic Beanstalk con su aplicacion y su ambiente, estos reciben los parametros ya definidos al invocar el modulo, de lo contrario tendran valores por defecto como ya se menciono, dentro del ambiente del Elastic BeanStalk se ha parametizado todas las variables para soportar la entrada de diferentes valores de configuracion,  que nos permitan la creacion de distintas caracteristicas del servicio.
+**2-. beanstalk/main.tf** Contiene la creacion del recurso Elastic Beanstalk con su aplicacion y su ambiente, estos reciben los parametros ya definidos al invocar el modulo, de lo contrario tendran valores por defecto como ya se menciono, dentro del ambiente del Elastic BeanStalk se ha parametizado todas las variables para soportar la entrada de diferentes valores de configuracion,  que nos permitan la creacion de distintas caracteristicas del servicio.
 
 **Ejemplo**  La Plantilla de lanzamiento para el Auto Scaling Group y su medicion para el escalado, asi como tambien se incorporo que los registros del servicio se almacenen el cloudwatch 
 
@@ -139,7 +139,7 @@ resource "aws_iam_role" "ec2_role" {
 }
 
 ```
-**beanstalk/output.tf** se agrega este archivo para proveer la salida de recursos fuera del modulo, como  por ejemplo en este caso he aplicado la salinda de DNS del ambiente levantando en beanstalk, esto con la funcionalidad de que dicho recurso u otros que se puedan agregar naturalmente sean utilizados por otros servicios que hagan uso del modulo, por lo tanto este recurso como ejemplo lo he expuesto al llamarlo en el archivo output.tf raiz, para que sea mostrada la funcionalidad del llamado del ambiente una vez completado el tf apply.
+**3-. beanstalk/output.tf** se agrega este archivo para proveer la salida de recursos fuera del modulo, como  por ejemplo en este caso he aplicado la salinda de DNS del ambiente levantando en beanstalk, esto con la funcionalidad de que dicho recurso u otros que se puedan agregar naturalmente sean utilizados por otros servicios que hagan uso del modulo, por lo tanto este recurso como ejemplo lo he expuesto al llamarlo en el archivo output.tf raiz, para que sea mostrada la funcionalidad del llamado del ambiente una vez completado el tf apply.
 
 ## Conclusion 
 
